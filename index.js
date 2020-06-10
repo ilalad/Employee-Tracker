@@ -1,19 +1,113 @@
-employeeTracker.js
+var mysql = require("mysql");
+var inquirer = require("inquirer");
 
-<!-- allows the user to:
+// create the connection information for the sql database
+var connection = mysql.createConnection({
+    host: "localhost",
+    //  port
+    port: 3306,
+    // Your username
+    user: "root",
+    // Your password
+    password: "satnaam10111",
+    database: "employeeTracker_db"
+});
 
-  * Add departments, roles, employees
+connection.connect(function (err) {
+    if (err) throw err;
+    // run the start function after the connection is made to prompt the user
+    start();
+});
 
-  * View departments, roles, employees
+// allow the user to: Add departments, roles, employees
 
-  * Update employee roles
+function start() {
+    inquirer.prompt({
+        name: "action",
+        type: "list",
+        message: "What would you like to do?",
+        choices: [
+            "Add Department",
+            "Add Employee",
+            "Add Role",
+            "Exit"
+        ]
 
-Bonus points if you're able to:
+    })
+        .then(function (answer) {
+            console.log(answer.action);
+            switch (answer.action) {
+                case "Add Department":
+                    addDept();
+                    break;
 
-  * Update employee managers
+                case "Add Employee":
+                    addEmployee();
+                    break;
 
-  * View employees by manager
+                case "Add Role":
+                    addRole();
+                    break;
 
-  * Delete departments, roles, and employees
+                case "Exit":
+                    connection.end();
+                    break;
+            }
+        });
+}
+function addDept() {
+    inquirer.prompt([
 
-  * View the total utilized budget of a department -- ie the combined salaries of all employees in that department -->
+        {
+            type: "input",
+            message: "Add Department",
+            name: "department"
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+
+}
+
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Add Employee ",
+            name: "employee",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+
+function addRole() {
+    inquirer.prompt({
+        type: "input",
+        message: "Add Role",
+        name: "role"
+    })
+        .then(function (answer) {
+            start();
+        })
+}
+
+
+
+
+//   * View departments, roles, employees
+
+//   * Update employee roles
+
+// Bonus points if you're able to:
+
+//   * Update employee managers
+
+//   * View employees by manager
+
+//   * Delete departments, roles, and employees
+
+//   * View the total utilized budget of a department -- 
+// ie the combined salaries of all employees in that department -->

@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
     // Your username
     user: "root",
     // Your password
-    password: "satnaam10111",
+    password: "",
     database: "employeeTracker_db"
 });
 
@@ -65,6 +65,7 @@ function addDept() {
         }
     ])
         .then(function (answer) {
+
             start();
         })
 

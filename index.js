@@ -79,14 +79,14 @@ function start() {
                     updateRole();
                     break;
                 case "Update Employee Managers":
-                    updateManager();
+                    updateManagers();
                     break;
 
 
-                case "View Departments":
+                case "View All Departments":
                     departmentsTable();
                     break;
-                case "View Employees":
+                case "View All Employees":
                     employeesTable();
                     break;
                 case "View Employees by Department":
@@ -106,6 +106,7 @@ function start() {
             }
         });
 }
+
 function addDepartment() {
     inquirer.prompt([
 
@@ -147,7 +148,7 @@ function addRole() {
 }
 
 
-
+//   * Delete departments, roles, and employees
 
 function removeEmployee() {
     inquirer.prompt([
@@ -186,9 +187,7 @@ function removeRole() {
         })
 }
 
-
-
-
+//   * Update employee roles
 
 function updateEmployee() {
     inquirer.prompt([
@@ -214,6 +213,8 @@ function updateRole() {
             start();
         })
 }
+//   * Update employee managers
+
 function updateManagers() {
     inquirer.prompt([
         {
@@ -226,12 +227,39 @@ function updateManagers() {
             start();
         })
 }
-function updateEmployee() {
+
+//   * View departments, roles, employees
+
+function departmentsTable() {
     inquirer.prompt([
         {
             type: "input",
-            message: "Update Employee ",
-            name: "updateEmployee",
+            message: "View All Departments",
+            name: "departmentsTable",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function employeesTable() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "View All Employees",
+            name: "employeesTable",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function employeesByDept() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "View Employees By Department",
+            name: "employeesByDept",
         }
     ])
         .then(function (answer) {
@@ -239,17 +267,29 @@ function updateEmployee() {
         })
 }
 
-//   * View departments, roles, employees
-
-//   * Update employee roles
-
-// Bonus points if you're able to:
-
-//   * Update employee managers
-
 //   * View employees by manager
 
-//   * Delete departments, roles, and employees
-
-//   * View the total utilized budget of a department -- 
-// ie the combined salaries of all employees in that department -->
+function employeesByManager() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "View Employees By Manager",
+            name: "employeesByManager",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function rolesTable() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "View All Roles",
+            name: "rolesTable",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}

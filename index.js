@@ -30,6 +30,19 @@ function start() {
             "Add Department",
             "Add Employee",
             "Add Role",
+
+            "Remove Employee",
+            "Update Employee",
+            "Update Employee Role",
+            "Update Employee Managers",
+
+            "View Departments",
+            "View Employees",
+            "View Employees by Department",
+            "View Employees by Manager",
+            "View Roles",
+
+
             "Exit"
         ]
 
@@ -38,7 +51,7 @@ function start() {
             console.log(answer.action);
             switch (answer.action) {
                 case "Add Department":
-                    addDept();
+                    addDepartment();
                     break;
 
                 case "Add Employee":
@@ -49,13 +62,51 @@ function start() {
                     addRole();
                     break;
 
+                case "Remove Employee":
+                    removeEmployee();
+                    break;
+                case "Remove Department":
+                    removeDepartment();
+                    break;
+                case "Remove Role":
+                    removeRole();
+                    break;
+
+                case "Update Employee":
+                    updateEmployee();
+                    break;
+                case "Update Employee Role":
+                    updateRole();
+                    break;
+                case "Update Employee Managers":
+                    updateManager();
+                    break;
+
+
+                case "View Departments":
+                    departmentsTable();
+                    break;
+                case "View Employees":
+                    employeesTable();
+                    break;
+                case "View Employees by Department":
+                    employeesByDept();
+                    break;
+                case "View Employees by Manager":
+                    employeesByManager();
+                    break;
+                case "View All Roles":
+                    rolesTable();
+                    break;
+
                 case "Exit":
                     connection.end();
                     break;
+
             }
         });
 }
-function addDept() {
+function addDepartment() {
     inquirer.prompt([
 
         {
@@ -97,6 +148,96 @@ function addRole() {
 
 
 
+
+function removeEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Remove Employee ",
+            name: "employee",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function removeDepartment() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Remove Department ",
+            name: "removeDepartment",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function removeRole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Remove Role ",
+            name: "removeRole",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+
+
+
+
+
+function updateEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Update Employee ",
+            name: "updateEmployee",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function updateRole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Update Employee Role",
+            name: "updateRole",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function updateManagers() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Update Employee Managers",
+            name: "updateManagers",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
+function updateEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Update Employee ",
+            name: "updateEmployee",
+        }
+    ])
+        .then(function (answer) {
+            start();
+        })
+}
 
 //   * View departments, roles, employees
 

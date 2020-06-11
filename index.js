@@ -1,6 +1,8 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+const cTable = require('console.table');
 
+var PORT = process.env.PORT || 8080;
 // create the connection information for the sql database
 var connection = mysql.createConnection({
     host: "localhost",
@@ -9,7 +11,7 @@ var connection = mysql.createConnection({
     // Your username
     user: "root",
     // Your password
-    password: "",
+    password: "satnaam10111",
     database: "employeeTracker_db"
 });
 
@@ -28,20 +30,14 @@ function start() {
         message: "What would you like to do?",
         choices: [
             "Add Department",
-            "Add Employee",
             "Add Role",
+            "Add Employee",
 
-            "Remove Employee",
-            "Update Employee",
             "Update Employee Role",
-            "Update Employee Managers",
 
             "View Departments",
-            "View Employees",
-            "View Employees by Department",
-            "View Employees by Manager",
             "View Roles",
-
+            "View Employees",
 
             "Exit"
         ]
@@ -54,50 +50,29 @@ function start() {
                     addDepartment();
                     break;
 
-                case "Add Employee":
-                    addEmployee();
-                    break;
-
                 case "Add Role":
                     addRole();
                     break;
 
-                case "Remove Employee":
-                    removeEmployee();
-                    break;
-                case "Remove Department":
-                    removeDepartment();
-                    break;
-                case "Remove Role":
-                    removeRole();
-                    break;
-
-                case "Update Employee":
-                    updateEmployee();
-                    break;
-                case "Update Employee Role":
-                    updateRole();
-                    break;
-                case "Update Employee Managers":
-                    updateManagers();
+                case "Add Employee":
+                    addEmployee();
                     break;
 
 
                 case "View All Departments":
                     departmentsTable();
                     break;
-                case "View All Employees":
-                    employeesTable();
-                    break;
-                case "View Employees by Department":
-                    employeesByDept();
-                    break;
-                case "View Employees by Manager":
-                    employeesByManager();
-                    break;
                 case "View All Roles":
                     rolesTable();
                     break;
+                case "View All Employees":
+                    employeesTable();
+                    break;
+
+                case "Update Employee Roles":
+                    updateRole();
+                    break;
+
 
                 case "Exit":
                     connection.end();
@@ -108,188 +83,110 @@ function start() {
 }
 
 function addDepartment() {
-    inquirer.prompt([
+    connection.query([
 
         {
             type: "input",
-            message: "Add Department",
+            message: "Enter name of the Department",
             name: "department"
         }
     ])
         .then(function (answer) {
 
+            "INSERT INTO department SET ?",
+            {
+                name: answer.name,
+
+            }
             start();
         })
-
-}
-
-function addEmployee() {
-    inquirer.prompt([
-        {
+    function addRole() {
+        inquirer.prompt({
             type: "input",
-            message: "Add Employee ",
-            name: "employee",
-        }
-    ])
-        .then(function (answer) {
-            start();
+            message: "What is the Role",
+            name: "role"
         })
-}
+            .then(function (answer) {
+                start();
+            })
+    }
 
-function addRole() {
-    inquirer.prompt({
-        type: "input",
-        message: "Add Role",
-        name: "role"
-    })
-        .then(function (answer) {
-            start();
-        })
-}
+    function addEmployee() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "Enter Employee Name ",
+                name: "employee",
+            }
+        ])
+            .then(function (answer) {
+                connection.query(
+                    "INSERT INTO employee SET ?",
+                    {
+                        first_name: answer.first_name,
+                        last_name: answer.last_name,
+                        role_id: answer.role_id,
+                        manager_id: answer.manager_id,
+
+                    })
+                start();
+            })
+    }
 
 
-//   * Delete departments, roles, and employees
+    //   * View departments, roles, employees
 
-function removeEmployee() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Remove Employee ",
-            name: "employee",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-function removeDepartment() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Remove Department ",
-            name: "removeDepartment",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-function removeRole() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Remove Role ",
-            name: "removeRole",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
+    function departmentsTable() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "View All Departments",
+                name: "departmentsTable",
+            }
+        ])
+            .then(function (answer) {
+                start();
+            })
+    }
 
-//   * Update employee roles
+    function rolesTable() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "View All Roles",
+                name: "rolesTable",
+            }
+        ])
+            .then(function (answer) {
+                start();
+            })
+    }
 
-function updateEmployee() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Update Employee ",
-            name: "updateEmployee",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-function updateRole() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Update Employee Role",
-            name: "updateRole",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-//   * Update employee managers
+    function employeesTable() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "View All Employees",
+                name: "employeesTable",
+            }
+        ])
+            .then(function (answer) {
+                start();
+            })
+    }
 
-function updateManagers() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Update Employee Managers",
-            name: "updateManagers",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
+    //   * Update employee roles
 
-//   * View departments, roles, employees
-
-function departmentsTable() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View All Departments",
-            name: "departmentsTable",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-function employeesTable() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View All Employees",
-            name: "employeesTable",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-function employeesByDept() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View Employees By Department",
-            name: "employeesByDept",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-
-//   * View employees by manager
-
-function employeesByManager() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View Employees By Manager",
-            name: "employeesByManager",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
-}
-function rolesTable() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View All Roles",
-            name: "rolesTable",
-        }
-    ])
-        .then(function (answer) {
-            start();
-        })
+    function updateRole() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "Enter Employee Role to Update",
+                name: "updateRole",
+            }
+        ])
+            .then(function (answer) {
+                start();
+            })
+    }
 }

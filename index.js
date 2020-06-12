@@ -231,53 +231,35 @@ function departmentsTable() {
 }
 
 function rolesTable() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View All Roles",
-            name: "rolesTable",
-        }
-    ])
-        .then(function (answer) {
-            connection.query(
-                `SELECT employee.id, first_name, last_name, title, salary, department_name
+    connection.query(
+        `SELECT employee.id, first_name, last_name, title, salary, department_name
                     FROM employee
                         LEFT JOIN role ON role_id = role.id`
-                , function (err, res) {
-                    if (err) throw err;
-                    var allRoles = cTable.getTable(res);
-                    console.log(allRoles);
+        , function (err, res) {
+            if (err) throw err;
+            var allRoles = cTable.getTable(res);
+            console.log(allRoles);
 
-                    start();
-                })
+            start();
         })
 }
 
+
 function employeesTable() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View All Employees",
-            name: "employeesTable",
-        }
-    ])
-        .then(function (answer) {
-            connection.query(
-                `SELECT employee.id, first_name, last_name, title, salary, department_name
+    connection.query(
+        `SELECT employee.id, first_name, last_name, title, salary, department_name
                     FROM employee
                         LEFT JOIN role ON role_id = role.id
                         LEFT JOIN department ON department_id  = department.id 
                     ORDER BY employee.id`
-                , function (err, res) {
-                    if (err) throw err;
-                    var allEmployees = cTable.getTable(res);
-                    console.log(allEmployees);
+        , function (err, res) {
+            if (err) throw err;
+            var allEmployees = cTable.getTable(res);
+            console.log(allEmployees);
 
-                    start();
-                })
+            start();
         })
 }
-
 
 //   * Update employee roles
 
@@ -290,16 +272,14 @@ function updateRole() {
         }
     ])
         .then(function (answer) {
-            // connection.query(
-            //     "UPDATE role SET ? WHERE ?",
-            //     [
-            //         {
-            //           title, salary, department_id 
-            //         }
-            //     ]
-            // )
-
-
+            connection.query(
+                "UPDATE role SET ? WHERE ?",
+                [
+                    {
+                        title, salary, department_id
+                    }
+                ]
+            )
             start();
         })
 }

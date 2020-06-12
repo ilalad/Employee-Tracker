@@ -88,13 +88,20 @@ function addDepartment() {
             type: "input",
             message: "Enter name of the Department",
             name: "department"
+        },
+        {
+            type: "input",
+            message: "Enter id",
+            name: "id"
         }
     ])
         .then(function (answer) {
             connection.query(
-                ["INSERT INTO department SET ?",
+                "INSERT INTO department SET ?",
+                [
                     {
-                        name: answer.name,
+                        name: answer.department,
+                        id: answer.id,
                     }
                 ],
                 function (error) {
@@ -107,17 +114,40 @@ function addDepartment() {
 }
 
 function addRole() {
-    inquirer.prompt({
-        type: "input",
-        message: "Enter Role",
-        name: "role"
-    })
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter Role",
+            name: "role"
+        },
+        {
+            type: "input",
+            message: "Enter role id",
+            name: "role_id"
+        },
+        {
+            type: "input",
+            message: "Enter total salary",
+            name: "salary"
+        },
+        {
+            type: "input",
+            message: "Enter Department id",
+            name: "department_id"
+        }
+
+    ])
         .then(function (answer) {
             connection.query(
                 "INSERT INTO role SET ?",
                 [
                     {
-                        name: answer.name,
+                        title: answer.role,
+                        id: answer.role_id,
+                        salary: answer.salary,
+                        department_id: answer.department_id
+
+
                     }
 
                 ],
@@ -133,11 +163,34 @@ function addEmployee() {
     inquirer.prompt([
         {
             type: "input",
-            message: "Enter Employee Name ",
-            name: "employee",
+            message: "Enter first name ",
+            name: "first_name",
+
+        },
+        {
+            type: "input",
+            message: "Enter last name ",
+            name: "last_name",
+
+        },
+        {
+            type: "input",
+            message: "Enter role id ",
+            name: "role_id",
+
+        },
+        {
+            type: "input",
+            message: "Enter Manager id ",
+            name: "manager_id",
+
         }
+
+
+
     ])
         .then(function (answer) {
+            console.log(answer);
             connection.query(
                 "INSERT INTO employee SET ?",
                 [
@@ -160,33 +213,22 @@ function addEmployee() {
 //   * View departments, roles, employees
 
 function departmentsTable() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "View All Departments",
-            name: "departmentsTable",
-        }
-    ])
-        .then(function (answer) {
-            connection.query(
-                `
-                SELECT employee.id, first_name, last_name, title, salary, depart_name
+    connection.query(
+        `
+                SELECT employee.id, first_name, last_name, title, salary, department_name
                 FROM employee
                 LEFT JOIN role ON role_id = role.id
                 LEFT JOIN department ON department_id  = department.id 
                 ORDER BY department.department_name;
                 `
-                , function (err, res) {
-                    if (err) throw err;
-                    var allDepartments = cTable.getTable(res);
-                    console.log(allDepartments);
-                    start();
-                }
-            )
-        })
-    start();
+        , function (err, res) {
+            if (err) throw err;
+            var allDepartments = cTable.getTable(res);
+            console.log(allDepartments);
+            start();
+        }
+    )
 }
-
 
 function rolesTable() {
     inquirer.prompt([
@@ -197,7 +239,17 @@ function rolesTable() {
         }
     ])
         .then(function (answer) {
-            start();
+            connection.query(
+                `SELECT employee.id, first_name, last_name, title, salary, department_name
+                    FROM employee
+                        LEFT JOIN role ON role_id = role.id`
+                , function (err, res) {
+                    if (err) throw err;
+                    var allRoles = cTable.getTable(res);
+                    console.log(allRoles);
+
+                    start();
+                })
         })
 }
 
@@ -211,7 +263,7 @@ function employeesTable() {
     ])
         .then(function (answer) {
             connection.query(
-                `SELECT employee.id, first_name, last_name, title, salary, depart_name
+                `SELECT employee.id, first_name, last_name, title, salary, department_name
                     FROM employee
                         LEFT JOIN role ON role_id = role.id
                         LEFT JOIN department ON department_id  = department.id 
@@ -238,6 +290,16 @@ function updateRole() {
         }
     ])
         .then(function (answer) {
+            // connection.query(
+            //     "UPDATE role SET ? WHERE ?",
+            //     [
+            //         {
+            //           title, salary, department_id 
+            //         }
+            //     ]
+            // )
+
+
             start();
         })
 }
